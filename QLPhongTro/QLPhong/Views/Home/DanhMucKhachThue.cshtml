@@ -1,0 +1,128 @@
+﻿@using QLPhong.Models
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<KhachThue>;
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+@{
+    ViewBag.Title = "KH";
+    Layout = "~/Views/Shared/_LayoutRoom.cshtml";
+}
+<style>
+    /* Định dạng màu nền cho trang */
+    body {
+        background-color: #B0E0E6;
+    }
+
+</style>
+@if (ViewData["success"] != null)
+{
+    <div class="alert alert-success">
+        @ViewData["success"]
+    </div>
+}
+<a href="@Url.Action("AddKH")" class="btn btn-primary">Cho khách thuê</a>
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("SearchTen", "Home", FormMethod.Get, new { @class = "form-inline" }))
+        {
+            <div class="form-group">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm kiếm theo tên" })
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        }
+    </div>
+</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Họ và tên đệm</th>
+            <th scope="col">Tên</th>
+            <th scope="col">CMND</th>
+            <th scope="col">Điện thoại</th>
+            <th scope="col">Ngày vào ở</th>
+            <th scope="col">Ngày trả phòng</th>
+            <th scope="col">Số phòng</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.HoTenDem)</td>
+                <td>@Html.DisplayFor(modelItem => item.Ten)</td>
+                <td>@Html.DisplayFor(modelItem => item.Cmnd)</td>
+                <td>@Html.DisplayFor(modelItem => item.DienThoai)</td>
+                <td>@item.NgayVaoO.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @if (item.NgayTraPhong.HasValue)
+                    {
+                        @item.NgayTraPhong.Value.ToString("dd/MM/yyyy")
+                    }
+                    else
+                    {
+                        @Html.Raw("Ngày trả phòng không có dữ liệu")
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.MaPhongNavigation.SoPhong)</td>
+                <td>
+                    <a href="@Url.Action("EditKH", new { id = item.MaKhachThue })" class="btn btn-info">
+                        <i class="fas fa-user-edit"></i> <!-- Biểu tượng sửa thông tin -->
+                    </a> |
+                    <a href="@Url.Action("DeleteKH", new { id = item.MaKhachThue })" class="btn btn-danger delete-room" data-toggle="modal" data-target="#confirmDeleteModal">
+                        <i class="fas fa-user-times"></i> <!-- Biểu tượng xóa -->
+                    </a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var pagedListRenderOptions = new PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                LinkToFirstPageFormat = "First",
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToLastPageFormat = "Last",
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always
+            };
+}
+@Html.PagedListPager(Model, page => Url.Action("DanhMucKhachThue", new { page = page }), pagedListRenderOptions)
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa khách hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Những dữ liệu liên quan sẽ bị xóa sạch và sẽ không thể khôi phục. Bạn có chắc chắn muốn xóa khách hàng này?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <a href="#" class="btn btn-danger" id="confirmDeleteButton">Xóa</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.delete-room').click(function (e) {
+            e.preventDefault();
+            var deleteUrl = $(this).attr('href');
+            $('#confirmDeleteButton').attr('href', deleteUrl);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+</script>

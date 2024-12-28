@@ -1,0 +1,120 @@
+﻿@using QLPhong.Models
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<Phong>;
+
+@{
+    ViewData["Title"] = "DanhMucPhongUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Đường dẫn đến thư viện jQuery,Lightbox -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+<style>
+    /* Định dạng màu nền cho trang */
+    body {
+        background-color: #B0E0E6;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Search", "User", FormMethod.Get, new { @class = "form-inline" }))
+        {
+            <div class="form-group">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm theo số phòng" })
+
+            </div>
+            <div class="form-group">
+                @Html.DropDownList("daThue", new SelectList(new List<SelectListItem>
+            {
+            new SelectListItem { Text = "Đã thuê", Value = "True" },
+            new SelectListItem { Text = "Chưa thuê", Value = "False" },
+            }, "Value", "Text"), "Tất cả", new { @class = "form-control" })
+            </div>
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <button type="submit" name="sortOrder" value="asc" class="btn btn-primary">Giá tăng dần</button>
+                    <button type="submit" name="sortOrder" value="desc" class="btn btn-primary">Giá giảm dần</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Số Phòng</th>
+            <th>Loại Phòng</th>
+            <th>Giá Thuê Tháng</th>
+            <th>Trạng Thái</th>
+            <th>Hình Ảnh</th>
+            <th>Thao Tác</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.SoPhong)</td>
+                <td>@Html.DisplayFor(modelItem => item.LoaiPhong)</td>
+                <td>@Html.DisplayFor(modelItem => item.GiaThueThang)</td>
+
+                <td>
+                    @if (item.DaThue)
+                    {
+                        <span class="badge badge-success">Đã Thuê</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-danger">Chưa Thuê</span>
+                    }
+                </td>
+
+                <td>
+                    <a href="@Url.Content("~/Anh/" + item.ImageUrl)" data-lightbox="image-gallery" data-title="Ảnh Phóng To">
+                        <img src="@Url.Content("~/Anh/" + item.ImageUrl)" alt="Hình Ảnh" width="100" height="100" />
+                    </a>
+                </td>
+                <td>
+
+                    @Html.ActionLink("Xem chi tiết phòng", "DetailsRoomUser", new { id = item.MaPhong }, new { @class = "btn btn-info" }) |
+                    @Html.ActionLink("Đặt Phòng", "AddKHUser", new { id = item.MaPhong }, new { @class = "btn btn-info btn-dat-phong", data_ma_phong = item.MaPhong, data_trang_thai = item.DaThue })
+                </td>
+            </tr>
+        }
+        
+
+    </tbody>
+</table>
+@{
+
+    var pagedListRenderOptions = new PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                LinkToFirstPageFormat = "First",
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToLastPageFormat = "Last",
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always
+            };
+}
+@Html.PagedListPager(Model, page => Url.Action("DanhMucPhongUser", new { page = page }), pagedListRenderOptions)
+
+<script>
+    $(document).ready(function () {
+        // Xử lý sự kiện khi người dùng nhấp ra bên ngoài lightbox
+        $(document).on('click', '.ekko-lightbox', function (e) {
+            // Đóng lightbox khi nhấp ra bên ngoài
+            if ($(e.target).hasClass('ekko-lightbox')) {
+                $(this).modal('hide');
+            }
+        });
+</script>

@@ -1,0 +1,38 @@
+﻿
+
+@{
+    ViewData["Title"] = "DanhMucPhong";
+    Layout = "~/Views/Shared/_LayoutContact.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-7 col-sm-12">
+        <h3>Gửi nhận xét</h3>
+        @if (ViewBag.Success != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewBag.Success
+            </div>
+        }
+        @using (Html.BeginForm("SendComment", "User", FormMethod.Post))
+        {
+            <label for="HoTen">Họ và tên:</label>
+            <input type="text" class="form-control" id="HoTen" name="HoTen" required>
+
+            <label for="Email">Email:</label>
+            <input type="email" class="form-control" id="Email" name="Email" required>
+
+            <label for="NoiDung">Nội dung nhận xét:</label>
+            <textarea class="form-control" id="NoiDung" name="NoiDung" rows="4" required></textarea>
+            <button type="submit" class="btn btn-primary">Gửi nhận xét</button>
+        }
+    </div>
+    <!-- Google Map iframe -->
+    <div class="col-md-5 col-sm-12">
+        <div class="map contact-right">
+            <h3>Địa chỉ</h3>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.2562153498743!2d106.70234607451745!3d10.791678058913272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528b462ec0001%3A0x10e90f914b037c35!2zMyDEkC4gSG_DoG5nIFNhLCDEkGEgS2FvLCBRdeG6rW4gMSwgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1712586786547!5m2!1svi!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</div>

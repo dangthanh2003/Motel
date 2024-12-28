@@ -1,0 +1,39 @@
+﻿@model QLPhong.Models.Phong
+
+@{
+    ViewData["Title"] = "DetailsRoom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    h2 {
+        text-align: center; /* Căn giữa nội dung */
+    }
+</style>
+
+<h2>Chi tiết phòng</h2>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Mã phòng</dt>
+            <dd>@Model.MaPhong</dd>
+            <dt>Số phòng</dt>
+            <dd>@Model.SoPhong</dd>
+            <dt>Loại phòng</dt>
+            <dd>@Model.LoaiPhong</dd>
+            <dt>Giá thuê tháng</dt>
+            <dd> @string.Format("{0:C0}", Model.GiaThueThang)</dd>
+            <dt>Trạng thái thuê</dt>
+            <dd><span class="label label-@(Model.DaThue ? "success" : "danger")">@(Model.DaThue ? "Đã thuê" : "Chưa thuê")</span></dd>
+
+        </dl>
+
+        <div>
+            @Html.ActionLink("Trở về danh mục phòng", "DanhMucPhongUser")
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,15 @@
+﻿@model QLPhong.Models.YKienKhach
+
+@{
+    ViewData["Title"] = "Chi Tiết Ý Kiến";
+    Layout = "~/Views/Shared/_LayoutRoom.cshtml";
+}
+
+<h2>Chi Tiết Ý Kiến</h2>
+<div>
+    <h4>Họ và Tên: @Model.HoTen</h4>
+    <h4>Email: @Model.Email</h4>
+    <h4>Ngày Gửi: @Model.NgayGui</h4>
+    <h4>Nội Dung: @Model.NoiDung</h4>
+    <h4>Trạng Thái: @(Model.TrangThai.HasValue && Model.TrangThai.Value ? "Đã xem" : "Chưa xem")</h4>
+</div>

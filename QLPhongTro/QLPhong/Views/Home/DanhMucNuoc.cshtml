@@ -1,0 +1,117 @@
+﻿@using QLPhong.Models
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<Nuoc>;
+@{
+    ViewData["Title"] = "DanhMucNuoc";
+    Layout = "~/Views/Shared/_LayoutRoom.cshtml";
+}
+
+<style>
+    /* Định dạng màu nền cho trang */
+    body {
+        background-color: #B0E0E6;
+    }
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+@if (ViewData["success"] != null)
+{
+    <div class="alert alert-success">
+        @ViewData["success"]
+    </div>
+}
+<a href="@Url.Action("AddNuoc", "Home")" class="btn btn-primary">Thêm Nước</a>
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("SearchNuoc", "Home", FormMethod.Get, new { @class = "form-inline" }))
+        {
+            <div class="form-group">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm theo số phòng" })
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+        }
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Ngày đọc số</th>
+            <th scope="col">Chỉ số cũ</th>
+            <th scope="col">Chỉ số mới</th>
+            <th scope="col">Giá tiền</th>
+            <th scope="col">Số phòng</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.NgayDocSo)</td>
+                <td>@item.ChiSoCu.ToString().TrimEnd('0').TrimEnd('.')</td>
+                <td>@item.ChiSoMoi.ToString().TrimEnd('0').TrimEnd('.')</td>
+                <td>@string.Format("{0:C0}", item.GiaTien)</td>
+                <td>@Html.DisplayFor(modelItem => item.MaPhongNavigation.SoPhong)</td>
+                <td>
+                    <a href="@Url.Action("EditNuoc", "Home", new { id = item.MaNuoc })" class="btn btn-info">
+                        <i class="fas fa-water"></i> <!-- Biểu tượng sửa nước -->
+                    </a> |
+                    <a href="@Url.Action("DeleteNuoc", "Home", new { id = item.MaNuoc })" class="btn btn-danger delete-room" data-toggle="modal" data-target="#confirmDeleteModal">
+                        <i class="fas fa-trash-alt"></i> <!-- Biểu tượng xóa -->
+                    </a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var pagedListRenderOptions = new PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                LinkToFirstPageFormat = "First",
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToLastPageFormat = "Last",
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always
+            };
+}
+
+@Html.PagedListPager(Model, page => Url.Action("DanhMucNuoc", new { page = page }), pagedListRenderOptions)
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa chỉ số nước của phòng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Những dữ liệu liên quan sẽ bị xóa sạch và sẽ không thể khôi phục. Bạn có chắc chắn muốn xóa chỉ số nước phòng này?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <a href="#" class="btn btn-danger" id="confirmDeleteButton">Xóa</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.delete-room').click(function (e) {
+            e.preventDefault();
+            var deleteUrl = $(this).attr('href');
+            $('#confirmDeleteButton').attr('href', deleteUrl);
+            $('#confirmDeleteModal').modal('show');
+        });
+    });
+</script>

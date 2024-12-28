@@ -1,0 +1,147 @@
+﻿@using QLPhong.Models
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<TaiKhoan>;
+
+
+@{
+    ViewData["Title"] = "DanhMucTaiKhoan";
+    Layout = "~/Views/Shared/_LayoutRoom.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    /* Định dạng màu nền cho trang */
+    body {
+        background-color: #B0E0E6; 
+    }
+    </style>
+@if (ViewData["success"] != null)
+{
+    <div class="alert alert-success">
+        @ViewData["success"]
+    </div>
+}
+<div class="container">
+    <h2>Danh Sách Tài Khoản</h2>
+    <p>
+        @Html.ActionLink("Tạo Mới", "CreateTK", null, new { @class = "btn btn-primary" })
+    </p>
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("SearchTK", "Home", FormMethod.Get, new { @class = "form-inline" }))
+            {
+                <div class="form-group">
+                    @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm theo số điện thoại" })
+
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("chucvu", new SelectList(new List<SelectListItem>
+                {
+                new SelectListItem { Text = "Quản lý", Value = "Quản lý" },
+                new SelectListItem { Text = "Khách hàng", Value = "Khách hàng" },
+                }, "Value", "Text"), "Tất cả", new { @class = "form-control" })
+                </div>
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            }
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Mật khẩu</th>
+                <th scope="col">Chức vụ</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
+                    <td>*****</td>
+                    <td>@Html.DisplayFor(modelItem => item.ChucVu)</td>
+                    <td>
+                        <label class="custom-control-label">
+                            @if (item.TrangThai != null)
+                            {
+                                if (item.TrangThai.Value)
+                                {
+                                    <span class="badge badge-success">Hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Đang quên mật khẩu</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary">Trạng thái không xác định</span>
+                            }
+                        </label>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Pass", new { id = item.MaTaiKhoan })" class="btn btn-info reset-password">
+                            <i class="fas fa-key"></i> <!-- Biểu tượng cấp lại mật khẩu -->
+                        </a>
+                        <a href="@Url.Action("EditTK", new { id = item.MaTaiKhoan })" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> <!-- Biểu tượng chỉnh sửa -->
+                        </a>
+                        <a href="@Url.Action("DeleteTK", new { id = item.MaTaiKhoan })" class="btn btn-danger delete-room" data-toggle="modal" data-target="#confirmDeleteModal">
+                            <i class="fas fa-trash-alt"></i> <!-- Biểu tượng xóa -->
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    @{
+        var pagedListRenderOptions = new PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                LinkToFirstPageFormat = "First",
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToLastPageFormat = "Last",
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always
+            };
+    }
+
+    @Html.PagedListPager(Model, page => Url.Action("DanhMucTaiKhoan", new { page = page }), pagedListRenderOptions)
+
+  </div>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa tài khoản này không</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Những dữ liệu liên quan sẽ bị xóa sạch và sẽ không thể khôi phục. Bạn có chắc chắn muốn xóa tài khoản này?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <a href="#" class="btn btn-danger" id="confirmDeleteButton">Xóa</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.delete-room').click(function (e) {
+                e.preventDefault();
+                var deleteUrl = $(this).attr('href');
+                $('#confirmDeleteButton').attr('href', deleteUrl);
+                $('#confirmDeleteModal').modal('show');
+            });
+        });
+    </script>

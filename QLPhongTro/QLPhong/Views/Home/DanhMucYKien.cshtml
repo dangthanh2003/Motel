@@ -1,0 +1,82 @@
+﻿@using QLPhong.Models
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<YKienKhach>;
+<style>
+    /* Định dạng màu nền cho trang */
+    body {
+        background-color: #B0E0E6;
+    }
+
+</style>
+@{
+    ViewData["Title"] = "DanhMucYKien";
+    Layout = "~/Views/Shared/_LayoutRoom.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+@if (!string.IsNullOrEmpty(ViewData["success"] as string))
+{
+    <div class="alert alert-success" role="alert">
+        @ViewData["success"]
+    </div>
+}
+
+<h2>Danh Mục Ý Kiến</h2>
+<div class="container">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Họ và tên</th>
+                <th scope="col">Email</th>
+                <th scope="col">Ngày gửi</th>
+                <th scope="col">Nội dung</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.NgayGui)</td>
+                    <td>@Html.DisplayFor(modelItem => item.NoiDung)</td>
+                    <td>
+                        @if (item.TrangThai.HasValue && item.TrangThai.Value)
+                        {
+                            <span class="badge badge-success">Đã xem</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">Chưa xem</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("YKienChiTiet", new { id = item.MaYKien })" class="btn btn-info">
+                            <i class="fas fa-info-circle"></i> <!-- Biểu tượng chi tiết -->
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@{
+    var pagedListRenderOptions = new PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                LinkToFirstPageFormat = "First",
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToLastPageFormat = "Last",
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always
+            };
+}
+
+@Html.PagedListPager(Model, page => Url.Action("DanhMucYKien", new { page = page }), pagedListRenderOptions)

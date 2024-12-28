@@ -1,0 +1,449 @@
+﻿<style>
+    a.dropdown-item {
+        background-color: #009933
+    }
+
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ROYAL HOTEL | Responsive Travel & Tourism Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    <link href="~/img/favicon.ico" rel="icon">
+    <link href="~/img/apple-favicon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <!-- Vendor CSS File -->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/vendor/animate/animate.min.css" rel="stylesheet">
+    <link href="~/vendor/slick/slick.css" rel="stylesheet">
+    <link href="~/vendor/slick/slick-theme.css" rel="stylesheet">
+    <link href="~/vendor/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Main Stylesheet File -->
+    <link href="~/css/hover-style.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <!-- Xữ lý selectedMenuItem-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Kiểm tra nếu đã có một mục menu được chọn trong sessionStorage
+            var selectedMenuItem = sessionStorage.getItem("selectedMenuItem");
+            if (selectedMenuItem) {
+                // Loại bỏ lớp "active" khỏi tất cả các mục menu
+                $(".nav-item").removeClass("active");
+
+                // Thêm lớp "active" cho mục menu được chọn từ sessionStorage
+                $("a[href='" + selectedMenuItem + "']").parent().addClass("active");
+            }
+
+            $(".nav-item").click(function () {
+                // Lấy đường dẫn của mục menu được click
+                var menuItemHref = $(this).find("a").attr("href");
+
+                // Lưu đường dẫn của mục menu vào sessionStorage
+                sessionStorage.setItem("selectedMenuItem", menuItemHref);
+
+                // Loại bỏ lớp "active" khỏi tất cả các mục menu
+                $(".nav-item").removeClass("active");
+
+                // Thêm lớp "active" cho mục được click
+                $(this).addClass("active");
+            });
+        });
+    </script>
+
+
+    
+</head>
+
+<body>
+
+    <!-- Header Section Start -->
+    <header id="header">
+        <a asp-controller="User" asp-action="Index" class="logo"><img src="~/img/logo.jpg" alt="logo"></a>
+        <div class="phone"><i class="fa fa-phone"></i>+0988672892</div>
+        <div class="mobile-menu-btn"><i class="fa fa-bars"></i></div>
+        <nav class="main-menu top-menu">
+            <ul>
+                <li><a asp-controller="User" asp-action="DanhMucPhongUser">Danh Sách Phòng Đặt</a></li>
+                <li><a asp-controller="User" asp-action="HienThi">Hiển Thị</a></li>
+                <li><a asp-controller="User" asp-action="DonHang">Đơn Hàng</a></li>
+                <li><a asp-controller="User" asp-action="Contact">Liên Hệ</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Xin chào @Context.Session.GetString("TaiKhoan")
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" asp-controller="Home" asp-action="Login">Thoát</a>
+
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <!-- Header Slider Start -->
+    <div id="headerSlider" class="carousel slide" data-ride="carousel">
+      
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/img/slider/header-slider-1.jpg" alt="Royal Hotel">
+                <div class="carousel-caption">
+                    <h1 class="animated fadeInRight">Welcome web quản lý phòng trọ</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remainder of your HTML content -->
+    <div id="amenities" class="home-amenities">
+        <div class="container">
+            <div class="section-header">
+                <h2>CÁC LOẠI TIỆN NGHI 
+                    VÀ DỊCH VỤ
+                </h2>
+                <p>
+                    Tiêu chí phục vụ khách hàng đối là
+                    không chỉ là nơi cung cấp mái ấm mà còn là tạo ra một môi trường an toàn,
+                    tiện nghi và  thoải mái để đáp ứng các nhu cầu cơ bản và đặc biệt của khách hàng.
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 icons">
+                    <i class="icon icon-2"></i>
+                    <h3>Air Conditioner</h3>
+                    <p>Các Loại Hình Dịch Vụ.</p>
+                </div>
+                <div class="col-md-3 col-sm-6 icons">
+                    <i class="icon icon-3"></i>
+                    <h3>Bathtub</h3>
+                    <p>Các Loại Hình Dịch Vụ.</p>
+                </div>
+                <div class="col-md-3 col-sm-6 icons">
+                    <i class="icon icon-4"></i>
+                    <h3>Shower</h3>
+                    <p>Các Loại Hình Dịch Vụ.</p>
+                </div>
+                <div class="col-md-3 col-sm-6 icons">
+                    <i class="icon icon-6"></i>
+                    <h3>Television</h3>
+                    <p>Các Loại Hình Dịch Vụ.</p>
+                </div>
+                <div class="col-md-3 col-sm-6 icons">
+                    <i class="icon icon-7"></i>
+                    <h3>WiFi</h3>
+                    <p>Các Loại Hình Dịch Vụ.</p>
+                </div>
+                <div class="col-md-3 col-sm-6 icons">
+                    <i class="icon icon-8"></i>
+                    <h3>Telephone</h3>
+                    <p>Các Loại Hình Dịch Vụ.</p>
+                </div>
+                <div class="col-md-3 col-sm-6 icons">
+                    <i class="icon icon-9"></i>
+                    <h3>Mini Bar</h3>
+                    <p>Các Loại Hình Dịch Vụ.</p>
+                </div>
+                <div class="col-md-3 col-sm-6 icons">
+                    <i class="icon icon-10"></i>
+                    <h3>Kitchen</h3>
+                    <p>Các Loại Hình Dịch Vụ.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Room Section Start -->
+    <div id="rooms">
+        <div class="container">
+            <div class="section-header">
+                <h2>Các Phòng Tốt Nhất</h2>
+                <p>
+                    Dưới Đây Là Danh Sách Các Phòng Tốt Và Được Sữ Dụng Nhiều Nhất
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="room-img">
+                                <div class="box12">
+                                    <img src="~/img/room/room-1.jpg">
+                                    <div class="box-content">
+                                        <h3 class="title">Standard Single</h3>
+                                        <ul class="icon">
+                                            <li><a href="#" data-toggle="modal" data-target="#modal-id"><i class="fa fa-link"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="room-des">
+                                <h3><a href="#" data-toggle="modal" data-target="#modal-id">Phòng Đơn</a></h3>
+                                <p>Phù hợp cho người có nhu cầu cần tìm không gian yên tĩnh để nghĩ ngơi</p>
+                                <ul class="room-size">
+                                    <li><i class="fa fa-arrow-right"></i>Diện tích : 25m2  </li>
+                                    <li><i class="fa fa-arrow-right"></i>Loại phòng: Có Gác </li>
+                                </ul>
+                                <ul class="room-icon">
+                                    <li class="icon-1"></li>
+                                    <li class="icon-2"></li>
+                                    <li class="icon-3"></li>
+                                    <li class="icon-4"></li>
+                                    <li class="icon-5"></li>
+                                    <li class="icon-6"></li>
+                                    <li class="icon-7"></li>
+                                    <li class="icon-8"></li>
+                                    <li class="icon-9"></li>
+                                    <li class="icon-10"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="room-rate">
+                                <h3>Phòng 110</h3>
+                                <h1>1000</h1>
+                                <a href="@Url.Action("DanhMucPhongUser", "User")">Đặt Ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="room-img">
+                                <div class="box12">
+                                    <img src="~/img/room/room-2.jpg">
+                                    <div class="box-content">
+                                        <h3 class="title">Standard Double</h3>
+                                        <ul class="icon">
+                                            <li><a href="" data-toggle="modal" data-target="#modal-id"><i class="fa fa-link"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="room-des">
+                                <h3><a href="#" data-toggle="modal" data-target="#modal-id">Hai Phòng</a></h3>
+                                <p>Với diện tích lớn hơn phòng đơn cùng với hai phòng ngủ phù hợp với hộ gia đình </p>
+                                <ul class="room-size">
+                                    <li><i class="fa fa-arrow-right"></i>Diện tích:50m2 </li>
+                                    <li><i class="fa fa-arrow-right"></i>Loại phòng:Có Gác </li>
+                                </ul>
+                                <ul class="room-icon">
+                                    <li class="icon-1"></li>
+                                    <li class="icon-2"></li>
+                                    <li class="icon-3"></li>
+                                    <li class="icon-4"></li>
+                                    <li class="icon-5"></li>
+                                    <li class="icon-6"></li>
+                                    <li class="icon-7"></li>
+                                    <li class="icon-8"></li>
+                                    <li class="icon-9"></li>
+                                    <li class="icon-10"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="room-rate">
+                                <h3>Phòng 200</h3>
+                                <h1>4000</h1>
+                                <a href="@Url.Action("DanhMucPhongUser", "User")">Đặt Ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="room-img">
+                                <div class="box12">
+                                    <img src="~/img/room/room-3.jpg">
+                                    <div class="box-content">
+                                        <h3 class="title">Premium </h3>
+                                        <ul class="icon">
+                                            <li><a href="#" data-toggle="modal" data-target="#modal-id"><i class="fa fa-link"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="room-des">
+                                <h3><a href="#" data-toggle="modal" data-target="#modal-id">Phòng đơn Premium</a></h3>
+                                <p>Phòng đơn được trang bị nội thất hiện đại phù hợp với sinh viên Hutech.</p>
+                                <ul class="room-size">
+                                    <li><i class="fa fa-arrow-right"></i>Diện tích: 80m2 </li>
+                                    <li><i class="fa fa-arrow-right"></i>Loại phòng: Vip </li>
+                                </ul>
+                                <ul class="room-icon">
+                                    <li class="icon-1"></li>
+                                    <li class="icon-2"></li>
+                                    <li class="icon-3"></li>
+                                    <li class="icon-4"></li>
+                                    <li class="icon-5"></li>
+                                    <li class="icon-6"></li>
+                                    <li class="icon-7"></li>
+                                    <li class="icon-8"></li>
+                                    <li class="icon-9"></li>
+                                    <li class="icon-10"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="room-rate">
+                                <h3>Phòng 201</h3>
+                                <h1>7000</h1>
+                                <a href="@Url.Action("DanhMucPhongUser", "User")">Đặt Ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="room-img">
+                                <div class="box12">
+                                    <img src="~/img/room/room-4.jpg">
+                                    <div class="box-content">
+                                        <h3 class="title">Silver Double</h3>
+                                        <ul class="icon">
+                                            <li><a href="#" data-toggle="modal" data-target="#modal-id"><i class="fa fa-link"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="room-des">
+                                <h3><a href="#" data-toggle="modal" data-target="#modal-id">Hai Phòng</a></h3>
+                                <p>Nội thất đầy đủ phòng rộng rãi,thoáng mát.</p>
+                                <ul class="room-size">
+                                    <li><i class="fa fa-arrow-right"></i>Diện tích: 45m2 sq ft </li>
+                                    <li><i class="fa fa-arrow-right"></i>Loại phòng:Thường </li>
+                                </ul>
+                                <ul class="room-icon">
+                                    <li class="icon-1"></li>
+                                    <li class="icon-2"></li>
+                                    <li class="icon-3"></li>
+                                    <li class="icon-4"></li>
+                                    <li class="icon-5"></li>
+                                    <li class="icon-6"></li>
+                                    <li class="icon-7"></li>
+                                    <li class="icon-8"></li>
+                                    <li class="icon-9"></li>
+                                    <li class="icon-10"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="room-rate">
+                                <h3>Phòng 202</h3>
+                                <h1>3500</h1>
+                                <a href="@Url.Action("DanhMucPhongUser", "User")">Đặt Ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="room-img">
+                                <div class="box12">
+                                    <img src="~/img/room/room-5.jpg">
+                                    <div class="box-content">
+                                        <h3 class="title">Premium Double</h3>
+                                        <ul class="icon">
+                                            <li><a href="#" data-toggle="modal" data-target="#modal-id"><i class="fa fa-link"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="room-des">
+                                <h3><a href="#" data-toggle="modal" data-target="#modal-id">Hai Phòng Premium</a></h3>
+                                <p>Phòng được trang bị tất cả nội thất hiện đại nhất diện tích cực kì rộng rãi.</p>
+                                <ul class="room-size">
+                                    <li><i class="fa fa-arrow-right"></i>Diện tích: 100m2 </li>
+                                    <li><i class="fa fa-arrow-right"></i>Loại phòng:Vip </li>
+                                </ul>
+                                <ul class="room-icon">
+                                    <li class="icon-1"></li>
+                                    <li class="icon-2"></li>
+                                    <li class="icon-3"></li>
+                                    <li class="icon-4"></li>
+                                    <li class="icon-5"></li>
+                                    <li class="icon-6"></li>
+                                    <li class="icon-7"></li>
+                                    <li class="icon-8"></li>
+                                    <li class="icon-9"></li>
+                                    <li class="icon-10"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="room-rate">
+                                <h3>Phòng 203</h3>
+                                <h1>10000</h1>
+                                <a href="@Url.Action("DanhMucPhongUser", "User")">Đặt Ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section Start -->
+    <footer id="footer" style="background-color: #00CCFF; color: #fff;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 style="font-family: Lobster;"><strong><i>ROYAL APARTMENT</i></strong></h2>
+                    <p><strong>Địa chỉ: </strong> 3/1 Đ.Hoàng Sa, P.Đa Kao, Q.1, TP.HCM</p>
+                    <p><strong>Hotline 24/7: </strong> <span style="color:red;">0988672892</span></p>
+                    <p><strong>Email:</strong> <a href="mailto:infomation.royal@gmail.com">infomation.royal@gmail.com</a></p>
+                </div>
+
+                <div class="col-12">
+                    <div class="social">
+                        <a href="https://www.instagram.com/nhatrosachse/" target="_blank"><i class="fa fa-instagram"></i></a>
+                        <a href="https://twitter.com/nha_tro61470" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61558401184831" target="_blank"><i class="fa fa-facebook-f"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger intent="WELCOME"
+                  chat-title="AI-Chat"
+                  agent-id="56c05d39-210e-4e32-84a8-1099c6f04531"
+                  language-code="en"></df-messenger>
+</body>
+</html>
+@RenderBody();

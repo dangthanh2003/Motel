@@ -1,0 +1,93 @@
+﻿@using QLPhong.Models
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<HoaDon>;
+
+@{
+    ViewData["Title"] = "DanhMucHoaDon";
+    Layout = "~/Views/Shared/_LayoutRoom.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    /* Định dạng màu nền cho trang */
+    body {
+        background-color: #B0E0E6;
+    }
+
+</style>
+<div class="container">
+    <h2>Danh Sách Hóa Đơn</h2>
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("SearchHD", "Home", FormMethod.Get, new { @class = "form-inline" }))
+            {
+                <div class="form-group">
+                    @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Tìm theo số phòng" })
+
+                    <select name="selectedMonth" class="form-control">
+                        <option value="">Chọn tháng</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">Tháng @i</option>
+                        }
+                    </select>
+
+                    <input type="hidden" name="searchString" value="@ViewBag.CurrentFilter" />
+
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+            }
+        </div>
+    </div>
+    <!-- Bảng hiển thị danh sách hóa đơn -->
+</div>
+
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Ngày lập</th>
+                <th scope="col">Thành tiền</th>
+                <th scope="col">Số phòng</th>
+                <th scope="col">Mã Khách Hàng</th>
+                <th scope="col">Tên khách hàng</th>
+                <th scope="col">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NgayLap.ToString("dd/MM/yyyy")</td>
+                    <td>@string.Format("{0:C0}", item.ThanhTien)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MaPhongNavigation.SoPhong)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MaKh)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MaKhNavigation.Ten)</td>
+                    <td>
+                        <a href="@Url.Action("ChiTietHD", new { id = item.MaHoaDon })" class="btn btn-info btn-sm">
+                            <i class="fas fa-info-circle"></i> <!-- Biểu tượng chi tiết -->
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@{
+    var pagedListRenderOptions = new PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                LinkToFirstPageFormat = "First",
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToLastPageFormat = "Last",
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always
+            };
+}
+@Html.PagedListPager(Model, page => Url.Action("DanhMucHoaDon", new { page = page }), pagedListRenderOptions)

@@ -1,0 +1,113 @@
+﻿<style>
+    a.dropdown-item {
+        background-color: #009933
+    }
+
+</style>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ROYAL HOTEL | Responsive Travel & Tourism Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    <link href="~/img/favicon.ico" rel="icon">
+    <link href="~/img/apple-favicon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <!-- Vendor CSS File -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendor/slick/slick.css" rel="stylesheet">
+    <link href="/vendor/slick/slick-theme.css" rel="stylesheet">
+    <link href="/vendor/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Main Stylesheet File -->
+    <link href="~/css/hover-style.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Kiểm tra nếu đã có một mục menu được chọn trong sessionStorage
+            var selectedMenuItem = sessionStorage.getItem("selectedMenuItem");
+            if (selectedMenuItem) {
+                // Loại bỏ lớp "active" khỏi tất cả các mục menu
+                $(".nav-item").removeClass("active");
+
+                // Thêm lớp "active" cho mục menu được chọn từ sessionStorage
+                $("a[href='" + selectedMenuItem + "']").parent().addClass("active");
+            }
+
+            $(".nav-item").click(function () {
+                // Lấy đường dẫn của mục menu được click
+                var menuItemHref = $(this).find("a").attr("href");
+
+                // Lưu đường dẫn của mục menu vào sessionStorage
+                sessionStorage.setItem("selectedMenuItem", menuItemHref);
+
+                // Loại bỏ lớp "active" khỏi tất cả các mục menu
+                $(".nav-item").removeClass("active");
+
+                // Thêm lớp "active" cho mục được click
+                $(this).addClass("active");
+            });
+        });
+    </script>
+
+
+
+
+</head>
+
+<body>
+    <!-- Header Section Start -->
+    <header id="header">
+        <a href="" class="logo"><img src="~/img/logo.jpg" alt="logo"></a>
+        <div class="phone"><i class="fa fa-phone"></i>+0988672892</div>
+        <div class="mobile-menu-btn"><i class="fa fa-bars"></i></div>
+        <nav class="main-menu top-menu">
+            <ul>
+                <li><a asp-controller="Home" asp-action="DanhMucPhong">Quản lý phòng</a></li>
+                <li><a asp-controller="Home" asp-action="DanhMucKhachThue">Quản lý khách thuê</a></li>
+                <li><a asp-controller="Home" asp-action="DanhMucNuoc">Quản lý nước</a></li>
+                <li><a asp-controller="Home" asp-action="DanhMucDien">Quản lý điện</a></li>
+                <li><a asp-controller="Home" asp-action="DanhMucHoaDon">Quản lý hóa đơn</a></li>
+                <li><a asp-controller="Home" asp-action="DanhMucTaiKhoan">Quản lý Đăng Nhập</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Xin chào @Context.Session.GetString("TaiKhoan")
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" asp-controller="Home" asp-action="DanhMucYKien">Liên hệ</a>
+                        <a class="dropdown-item" asp-controller="Home" asp-action="Login">Thoát</a>
+
+
+                    </div>
+                </li>
+
+            </ul>
+
+
+
+        </nav>
+    </header>
+    <div style="min-height:750px">
+        @RenderBody()
+    </div>
+
+   
+
+   
+</body>
+</html>
